@@ -1,3 +1,7 @@
+function isMobileDevice() {
+  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 function continueGame() {
   const alphabet = getARandomAlphabet();
   const currentAlphabet = document.getElementById("current-alphabet");
@@ -14,7 +18,7 @@ function handleKeyPress(playerPressed) {
     return;
   }
 
-  // ✅ Mobile vibration support
+  // Vibrate on mobile
   if ("vibrate" in navigator) {
     navigator.vibrate(50);
   }
@@ -37,13 +41,15 @@ function handleKeyPress(playerPressed) {
   }
 }
 
-// ✅ Desktop key support
+// Desktop keyboard support
 document.addEventListener("keyup", (event) => {
   handleKeyPress(event.key.toLowerCase());
 });
 
-// ✅ Mobile/tap support
+// Mobile-only click support for on-screen keys
 function setupKbdButtons() {
+  if (!isMobileDevice()) return; // Disable clicks on desktop
+
   const keys = document.querySelectorAll(".kbd");
   keys.forEach((keyEl) => {
     keyEl.addEventListener("click", () => {
@@ -63,7 +69,7 @@ function enterGame() {
 
   localStorage.setItem("screen", "play-ground");
 
-  setupKbdButtons(); // rebind key click events
+  setupKbdButtons();
   continueGame();
 }
 
@@ -80,7 +86,7 @@ function gameOver() {
   localStorage.setItem("screen", "final-score");
 }
 
-// ✅ Restore screen on reload
+// Restore screen on reload
 window.addEventListener("DOMContentLoaded", () => {
   const screen = localStorage.getItem("screen");
 

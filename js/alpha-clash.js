@@ -102,3 +102,20 @@ window.addEventListener("DOMContentLoaded", () => {
     showElementById("home-screen");
   }
 });
+
+
+function goHome() {
+  // Hide all game sections
+  hideElementByID("play-ground");
+  hideElementByID("final-score");
+
+  // Show home screen
+  showElementById("home-screen");
+
+  // Optional: Reset score and life
+  setTextElementValueById('current-life', 5);
+  setTextElementValueById('current-score', 0);
+
+  // Optional: Clear saved screen
+  localStorage.removeItem("screen");
+}

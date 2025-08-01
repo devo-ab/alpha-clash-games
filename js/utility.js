@@ -1,48 +1,44 @@
-function hideElementByID(elementId){
-    const element = document.getElementById(elementId);
-    element.classList.add('hidden');
+function hideElementByID(elementId) {
+  const element = document.getElementById(elementId);
+  element.classList.add("hidden");
 }
 
-function showElementById (elementId){
-    const element = document.getElementById(elementId);
-    element.classList.remove('hidden');
+function showElementById(elementId) {
+  const element = document.getElementById(elementId);
+  element.classList.remove("hidden");
 }
 
-function setBackgroundColorById (elementId){
-    const element = document.getElementById(elementId);
-    element.classList.add('bg-orange-400');
+function setBackgroundColorById(letter) {
+  const key = document.getElementById(letter.toLowerCase());
+  if (key) {
+    key.classList.add("bg-orange-400", "text-white");
+  }
 }
 
-function removeBackgroundColorById (elementId){
-    const element = document.getElementById(elementId);
-    element.classList.remove('bg-orange-400');
+function removeBackgroundColorById(letter) {
+  const key = document.getElementById(letter.toLowerCase());
+  if (key) {
+    key.classList.remove("bg-orange-400", "text-white");
+  }
 }
 
-function getTextElementValueById (elementId){
-    const element = document.getElementById(elementId);
-    const elementValueText = element.innerText;
-    const value = parseInt(elementValueText);
-    return value;
+function getTextElementValueById(elementId) {
+  const element = document.getElementById(elementId);
+  return parseInt(element.innerText);
 }
 
-function setTextElementValueById (elementId, value){
-    const element = document.getElementById(elementId);
-    element.innerText = value;
+function setTextElementValueById(elementId, value) {
+  const element = document.getElementById(elementId);
+  element.innerText = value;
 }
 
-function getElementTextById (elementId){
-    const element = document.getElementById(elementId);
-    const text = element.innerText;
-    return text;
+function getElementTextById(elementId) {
+  const element = document.getElementById(elementId);
+  return element.innerText;
 }
 
-function getARandomAlphabet (){
-    const alphabetStrings = 'abcdefghijklmnopqrstuvwxyz';
-    const alphabets = alphabetStrings.split('');
-
-    const randomNumber = Math.random()*25;
-    const index = Math.round(randomNumber);
-
-    const alphabet = alphabets[index];
-    return alphabet;
+function getARandomAlphabet() {
+  const alphabets = "abcdefghijklmnopqrstuvwxyz".split("");
+  const index = Math.floor(Math.random() * alphabets.length);
+  return alphabets[index];
 }

@@ -1,38 +1,29 @@
 function continueGame() {
   const alphabet = getARandomAlphabet();
-
   const currentAlphabet = document.getElementById("current-alphabet");
-  currentAlphabet.innerText = alphabet;
-
+  currentAlphabet.innerText = alphabet.toUpperCase();
   setBackgroundColorById(alphabet);
 }
 
-function handleKeyboardKeyUpEvent() {
-  const playerPressed = event.key;
-  if(playerPressed === 'Escape'){
-    gameOver();
-  }
+function handleKeyPress(playerPressed) {
   const currentAlphabet = document.getElementById("current-alphabet");
-  const targetAlphabet = currentAlphabet.innerText;
-  const exceptedAlphabet = targetAlphabet.toLowerCase();
+  const targetAlphabet = currentAlphabet.innerText.toLowerCase();
 
-  if (playerPressed === exceptedAlphabet) {
-    // console.log('You got a point');
-    // console.log('you have pressed correctly', exceptedAlphabet);
+  if (playerPressed === 'escape') {
+    gameOver();
+    return;
+  }
+
+  if (playerPressed === targetAlphabet) {
     const currentScore = document.getElementById("current-score");
-    const currentScoreText = currentScore.innerText;
-    const upScore = parseInt(currentScoreText);
-    const updatedScore = upScore + 1;
+    const updatedScore = parseInt(currentScore.innerText) + 1;
     currentScore.innerText = updatedScore;
 
-    removeBackgroundColorById(exceptedAlphabet);
+    removeBackgroundColorById(targetAlphabet);
     continueGame();
   } else {
-    // console.log('You loss a live');
     const currentLife = document.getElementById("current-life");
-    const currentLifeText = currentLife.innerText;
-    const upLife = parseInt(currentLifeText);
-    const updatedLife = upLife - 1;
+    const updatedLife = parseInt(currentLife.innerText) - 1;
     currentLife.innerText = updatedLife;
 
     if (updatedLife === 0) {
@@ -41,15 +32,23 @@ function handleKeyboardKeyUpEvent() {
   }
 }
 
-document.addEventListener("keyup", handleKeyboardKeyUpEvent);
+// Keyboard support (desktop)
+document.addEventListener("keyup", (event) => {
+  handleKeyPress(event.key.toLowerCase());
+});
 
-// function play(){
-//     const homeScreen = document.getElementById('home-screen');
-//     homeScreen.classList.add('hidden');
+// Mobile/Click support for kbd buttons
+function setupKbdButtons() {
+  const keys = document.querySelectorAll(".kbd");
+  keys.forEach((keyEl) => {
+    keyEl.addEventListener("click", () => {
+      const key = keyEl.innerText.trim().toLowerCase();
+      handleKeyPress(key);
+      if ("vibrate" in navigator) navigator.vibrate(50); // optional mobile feedback
+    });
+  });
+}
 
-//     const playGround = document.getElementById('play-ground');
-//     playGround.classList.remove('hidden');
-// }
 function enterGame() {
   hideElementByID("home-screen");
   hideElementByID("final-score");
@@ -57,6 +56,9 @@ function enterGame() {
 
   setTextElementValueById('current-life', 5);
   setTextElementValueById('current-score', 0);
+
+  setupKbdButtons(); // add click event to all keys
+
   continueGame();
 }
 
@@ -67,6 +69,6 @@ function gameOver() {
   const lastScore = getTextElementValueById('current-score');
   setTextElementValueById('last-score', lastScore);
 
-  const currentAlphabet = getElementTextById('current-alphabet');
+  const currentAlphabet = getElementTextById('current-alphabet').toLowerCase();
   removeBackgroundColorById(currentAlphabet);
 }

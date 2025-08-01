@@ -20,7 +20,7 @@ function handleKeyPress(playerPressed) {
 
   // Vibrate on mobile
   if ("vibrate" in navigator) {
-    navigator.vibrate(50);
+    navigator.vibrate(18);
   }
 
   if (playerPressed === targetAlphabet) {

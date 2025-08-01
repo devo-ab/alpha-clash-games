@@ -14,6 +14,11 @@ function handleKeyPress(playerPressed) {
     return;
   }
 
+  // ✅ Mobile vibration support
+  if ("vibrate" in navigator) {
+    navigator.vibrate(50);
+  }
+
   if (playerPressed === targetAlphabet) {
     const currentScore = document.getElementById("current-score");
     const updatedScore = parseInt(currentScore.innerText) + 1;
@@ -32,19 +37,18 @@ function handleKeyPress(playerPressed) {
   }
 }
 
-// Keyboard support (desktop)
+// ✅ Desktop key support
 document.addEventListener("keyup", (event) => {
   handleKeyPress(event.key.toLowerCase());
 });
 
-// Mobile/Click support for kbd buttons
+// ✅ Mobile/tap support
 function setupKbdButtons() {
   const keys = document.querySelectorAll(".kbd");
   keys.forEach((keyEl) => {
     keyEl.addEventListener("click", () => {
       const key = keyEl.innerText.trim().toLowerCase();
       handleKeyPress(key);
-      if ("vibrate" in navigator) navigator.vibrate(18); // optional mobile feedback
     });
   });
 }
@@ -57,8 +61,9 @@ function enterGame() {
   setTextElementValueById('current-life', 5);
   setTextElementValueById('current-score', 0);
 
-  setupKbdButtons(); // add click event to all keys
+  localStorage.setItem("screen", "play-ground");
 
+  setupKbdButtons(); // rebind key click events
   continueGame();
 }
 
@@ -71,4 +76,23 @@ function gameOver() {
 
   const currentAlphabet = getElementTextById('current-alphabet').toLowerCase();
   removeBackgroundColorById(currentAlphabet);
+
+  localStorage.setItem("screen", "final-score");
 }
+
+// ✅ Restore screen on reload
+window.addEventListener("DOMContentLoaded", () => {
+  const screen = localStorage.getItem("screen");
+
+  if (screen === "play-ground") {
+    enterGame();
+  } else if (screen === "final-score") {
+    hideElementByID("home-screen");
+    showElementById("final-score");
+
+    const lastScore = getTextElementValueById('current-score');
+    setTextElementValueById('last-score', lastScore);
+  } else {
+    showElementById("home-screen");
+  }
+});

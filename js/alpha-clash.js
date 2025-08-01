@@ -44,7 +44,7 @@ function setupKbdButtons() {
     keyEl.addEventListener("click", () => {
       const key = keyEl.innerText.trim().toLowerCase();
       handleKeyPress(key);
-      if ("vibrate" in navigator) navigator.vibrate(50); // optional mobile feedback
+      if ("vibrate" in navigator) navigator.vibrate(18); // optional mobile feedback
     });
   });
 }
